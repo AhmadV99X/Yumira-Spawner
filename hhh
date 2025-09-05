@@ -1,0 +1,114 @@
+-- LocalScript
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "YumiraSpawner"
+
+-- Main Draggable Window
+local window = Instance.new("Frame", gui)
+window.Name = "MainWindow"
+window.BackgroundColor3 = Color3.fromRGB(18, 36, 55)
+window.BorderSizePixel = 0
+window.Position = UDim2.new(0.3, 0, 0.2, 0)
+window.Size = UDim2.new(0, 400, 0, 400)
+window.Active = true
+window.Draggable = true
+
+-- Title
+local title = Instance.new("TextLabel", window)
+title.Text = "Yumira Spawner [v1.2]"
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SourceSansSemibold
+title.TextSize = 20
+
+-- Toggle Button (Tab on the side)
+local toggleBtn = Instance.new("TextButton", gui)
+toggleBtn.Name = "ToggleButton"
+toggleBtn.Size = UDim2.new(0, 100, 0, 40)
+toggleBtn.Position = UDim2.new(0, 10, 0.5, -20) -- left side middle
+toggleBtn.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)
+toggleBtn.Text = "Toggle Menu"
+toggleBtn.Font = Enum.Font.SourceSansBold
+toggleBtn.TextSize = 16
+toggleBtn.BorderSizePixel = 0
+
+-- Create input fields function
+local function createInput(parent, labelText, yPos)
+	local label = Instance.new("TextLabel", parent)
+	label.Text = labelText
+	label.Position = UDim2.new(0, 20, 0, yPos)
+	label.Size = UDim2.new(0, 100, 0, 25)
+	label.TextColor3 = Color3.fromRGB(180, 180, 180)
+	label.BackgroundTransparency = 1
+	label.Font = Enum.Font.SourceSans
+	label.TextSize = 16
+
+	local input = Instance.new("TextBox", parent)
+	input.Position = UDim2.new(0, 130, 0, yPos)
+	input.Size = UDim2.new(0, 200, 0, 25)
+	input.BackgroundColor3 = Color3.fromRGB(32, 39, 60)
+	input.TextColor3 = Color3.fromRGB(255, 255, 255)
+	input.BorderSizePixel = 0
+	input.ClearTextOnFocus = false
+	input.Font = Enum.Font.SourceSans
+	input.TextSize = 16
+	input.Text = ""
+
+	return input
+end
+
+-- Inputs
+local petNameInput = createInput(window, "Pet Name", 50)
+petNameInput.Text = "Butterfly"
+
+local petKgInput = createInput(window, "Pet KG", 90)
+petKgInput.Text = "125"
+
+local petAgeInput = createInput(window, "Pet Age", 130)
+petAgeInput.Text = "100"
+
+-- Spawn Button
+local spawnBtn = Instance.new("TextButton", window)
+spawnBtn.Position = UDim2.new(0.5, -100, 0, 180)
+spawnBtn.Size = UDim2.new(0, 200, 0, 35)
+spawnBtn.BackgroundColor3 = Color3.fromRGB(92, 75, 219)
+spawnBtn.Text = "SPAWN"
+spawnBtn.Font = Enum.Font.SourceSansBold
+spawnBtn.TextSize = 18
+spawnBtn.TextColor3 = Color3.new(1, 1, 1)
+spawnBtn.BorderSizePixel = 0
+
+-- Output Log Box
+local output = Instance.new("TextLabel", window)
+output.Position = UDim2.new(0, 10, 0, 230)
+output.Size = UDim2.new(1, -20, 0, 140)
+output.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+output.TextColor3 = Color3.fromRGB(220, 220, 220)
+output.TextXAlignment = Enum.TextXAlignment.Left
+output.TextYAlignment = Enum.TextYAlignment.Top
+output.TextWrapped = true
+output.Text = ""
+output.Font = Enum.Font.Code
+output.TextSize = 14
+output.BorderColor3 = Color3.new(1, 1, 1)
+output.BorderSizePixel = 2
+
+-- OnClick Behavior
+spawnBtn.MouseButton1Click:Connect(function()
+	local petName = petNameInput.Text
+	local petKG = tonumber(petKgInput.Text) or 0
+	local petAge = tonumber(petAgeInput.Text) or 0
+
+	output.Text =
+		"Starting Spawn [Wait 10s]\n" ..
+		"Getting Data Model [0%]\n" ..
+		"Importing Data Model [Waiting For Server]\n\n" ..
+		string.format("Pet Name: %s | KG: %d | Age: %d [Success]", petName, petKG, petAge)
+end)
+
+-- Toggle Button Functionality
+toggleBtn.MouseButton1Click:Connect(function()
+	window.Visible = not window.Visible
+end)
